@@ -1,7 +1,4 @@
-const SLI = "http://localhost:8001/SLI";
-
-document.body.style.backgroundImage =
-  "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGCiMGHt2_v8ASgPvGTig3LLpgv-6nYRIgBQ&usqp=CAU)";
+const API = " http://localhost:8000/API"
 
 let name = document.querySelector("#name");
 let surname = document.querySelector("#surname");
@@ -9,8 +6,8 @@ let group = document.querySelector("#group");
 let image = document.querySelector("#image");
 let btnAdd = document.querySelector("#btn-add");
 
-let searchInput = document.querySelector("#search");
-let searchValue = "";
+let searchInp = document.querySelector("#search");
+let searchVal = "";
 
 let editName = document.querySelector("#edit-name");
 let editSurName = document.querySelector("#edit-surname");
@@ -45,7 +42,7 @@ btnAdd.addEventListener("click", async function () {
     return;
   }
 
-  await fetch(SLI, {
+  await fetch(API,{
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -63,12 +60,13 @@ btnAdd.addEventListener("click", async function () {
 
 async function render() {
   let students = await fetch(
-    `${SLI}?q=${searchValue}&_page=${currentPage}&_limit=6`
+    `${API}?q=${searchVal}&_page=${currentPage}&_limit=6`
   )
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
   drawPaginationButtons();
+
 
   list.innerHTML = "";
   students.forEach((element) => {
@@ -79,8 +77,13 @@ async function render() {
       <img src=${element.image} class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">${element.name}</h5>
+
         <p class="card-text">${element.group}</p>
         <p class="card-text">$ ${element.surname}</p>
+
+        <p class="card-text">${element.surname}</p>
+        <p class="card-text"> ${element.group}</p>
+
         <a href="#" id=${element.id} onclick = 'deleteStudent(${element.id})' class="btn btn-danger btn-delete">DELETE</a>
         <a href="#" id=${element.id} data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success btn-edit">EDIT</a>
       </div>
@@ -91,18 +94,33 @@ async function render() {
 }
 render();
 
-function drawPaginationButtons() {
-  fetch(`${SLI}?q=${searchValue}`)
-    .then((res) => res.json())
-    .then((data) => {
-      pageTotalCount = Math.ceil(data.length / 6);
 
-      paginationList.innerHTML = "";
-      for (let i = 1; i < pageTotalCount; i++) {
-        if (currentPage == i) {
-          let page1 = document.createElement("li");
-          page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
-          paginationList.append(page1);
+
+function drawPaginationButtons(){
+    fetch(`${API}?q=${searchVal}`)
+    .then((res) =>  res.json())
+    .then((data) => {
+        pageTotalCount  = Math.ceil(data.length / 6.); 
+
+
+        paginationList.innerHTML = '';
+        for(let i=1; i < pageTotalCount; i++){
+
+            if(currentPage == i){
+                let page1 = document.createElement('li')
+                page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+                paginationList.append(page1);
+            }else{
+                let page1 = document.createElement('li')
+                page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+                paginationList.append(page1);  
+            };
+        };
+
+        //? красим кнопки
+        if(currentPage == 1) {
+            prev.classList.add('disabled');
+
         } else {
           let page1 = document.createElement("li");
           page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
@@ -150,7 +168,7 @@ document.addEventListener("click", function (e) {
 });
 
 function deleteStudent(id) {
-  fetch(`${SLI}/${id}`, {
+  fetch(`${API}/${id}`, {
     method: "DELETE",
   }).then(() => render());
 }
@@ -159,7 +177,7 @@ function deleteStudent(id) {
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("btn-edit")) {
     let id = e.target.id;
-    fetch(`${SLI}/${id}`)
+    fetch(`${API}/${id}`)
       .then((res) => res.json())
       .then((data) => {
         // Заполняем поля модалки данными
@@ -196,7 +214,7 @@ editSaveBtn.addEventListener("click", function () {
 });
 
 function saveEdit(editedStudent, id) {
-  fetch(`${SLI}/${id}`, {
+  fetch(`${API}/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -210,7 +228,7 @@ function saveEdit(editedStudent, id) {
   modal.hide();
 }
 
-searchInput.addEventListener("input", () => {
-  searchValue = searchInput.value;
+searchInp.addEventListener("input", () => {
+  searchVal = searchInp.value;
   render();
 });
