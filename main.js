@@ -1,4 +1,4 @@
-const API = " http://localhost:8000/API"
+const API = " http://localhost:8001/API";
 
 let name = document.querySelector("#name");
 let surname = document.querySelector("#surname");
@@ -42,7 +42,7 @@ btnAdd.addEventListener("click", async function () {
     return;
   }
 
-  await fetch(API,{
+  await fetch(API, {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -67,7 +67,6 @@ async function render() {
 
   drawPaginationButtons();
 
-
   list.innerHTML = "";
   students.forEach((element) => {
     let newElem = document.createElement("div");
@@ -81,9 +80,6 @@ async function render() {
         <p class="card-text">${element.group}</p>
         <p class="card-text">$ ${element.surname}</p>
 
-        <p class="card-text">${element.surname}</p>
-        <p class="card-text"> ${element.group}</p>
-
         <a href="#" id=${element.id} onclick = 'deleteStudent(${element.id})' class="btn btn-danger btn-delete">DELETE</a>
         <a href="#" id=${element.id} data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success btn-edit">EDIT</a>
       </div>
@@ -94,38 +90,32 @@ async function render() {
 }
 render();
 
-
-
-function drawPaginationButtons(){
-    fetch(`${API}?q=${searchVal}`)
-    .then((res) =>  res.json())
+function drawPaginationButtons() {
+  fetch(`${API}?q=${searchVal}`)
+    .then((res) => res.json())
     .then((data) => {
-        pageTotalCount  = Math.ceil(data.length / 6.); 
+      pageTotalCount = Math.ceil(data.length / 6);
 
-
-        paginationList.innerHTML = '';
-        for(let i=1; i < pageTotalCount; i++){
-
-            if(currentPage == i){
-                let page1 = document.createElement('li')
-                page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
-                paginationList.append(page1);
-            }else{
-                let page1 = document.createElement('li')
-                page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
-                paginationList.append(page1);  
-            };
-        };
-
-        //? красим кнопки
-        if(currentPage == 1) {
-            prev.classList.add('disabled');
-
+      paginationList.innerHTML = "";
+      for (let i = 1; i < pageTotalCount; i++) {
+        if (currentPage == i) {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
         } else {
           let page1 = document.createElement("li");
           page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
           paginationList.append(page1);
         }
+      }
+
+      //? красим кнопки
+      if (currentPage == 1) {
+        prev.classList.add("disabled");
+      } else {
+        let page1 = document.createElement("li");
+        page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+        paginationList.append(page1);
       }
 
       //? красим кнопки
@@ -190,6 +180,8 @@ document.addEventListener("click", function (e) {
       });
   }
 });
+
+//!  сохранение изменений данных студентов
 
 editSaveBtn.addEventListener("click", function () {
   let id = this.id; // вытаскиваем из кнопки id и ложим его в перееменную
