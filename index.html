@@ -13,19 +13,26 @@
     />
   </head>
   <body>
-  
-     <!--?  NAVBAR start -->
+    <!--?  NAVBAR start -->
     <nav class="navbar navbar-light bg-warning navbar-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand">STUDENTS LIST</a>
-          <form class="d-flex">
-            <input id="search" class="form-control me-2" type="search" placeholder="Search student" aria-label="Search">
-            <button class="btn btn-outline-danger" type="submit">SEARCH STUDENT</button>
-          </form>
-        </div>
-      </nav>
-      <!-- ?NAVBAR end-->
-      
+      <div class="container-fluid">
+        <a class="navbar-brand">STUDENTS LIST</a>
+        <form class="d-flex">
+          <input
+            id="search"
+            class="form-control me-2"
+            type="search"
+            placeholder="Search student"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-danger" type="submit">
+            SEARCH STUDENT
+          </button>
+        </form>
+      </div>
+    </nav>
+    <!-- ?NAVBAR end-->
+
     <!-- ?DOCUMENTATION PANEL -->
     <div class="admin mt-5 d-flex flex-column w-100 align-items-center">
       <h2>Students List</h2>
@@ -58,6 +65,16 @@
 
     <!-- ?DOCUMENTATION PANEL -->
 
+
+    <!-- ? content -->
+
+    <div
+      id="students-list"
+      class="d-flex flex-wrap justify-content-center"
+    ></div>
+
+    <!-- ? content -->
+
     <!-- ? MODAL start -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -88,7 +105,12 @@
       <!-- ? MODAL end -->
 
 
+
     <script src="./main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
