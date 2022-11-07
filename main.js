@@ -1,6 +1,7 @@
 const SLI = "http://localhost:8001/SLI";
 
-document.body.style.backgroundImage = 'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGCiMGHt2_v8ASgPvGTig3LLpgv-6nYRIgBQ&usqp=CAU)';
+document.body.style.backgroundImage =
+  "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGCiMGHt2_v8ASgPvGTig3LLpgv-6nYRIgBQ&usqp=CAU)";
 
 let name = document.querySelector("#name");
 let surname = document.querySelector("#surname");
@@ -90,77 +91,6 @@ async function render() {
 }
 render();
 
-function deleteStudent(id) {
-  fetch(`${SLI}/${id}`, {
-    method: "DELETE",
-  }).then(() => render());
-}
-
-
-searchInput.addEventListener("input", () => {
-  searchValue = searchInput.value;
-  render();
-});
-
-//! РЕДАКТИРОВАНИЕ ДАННЫХ  
-document.addEventListener("click", function (e) { 
-    if (e.target.classList.contains("btn-edit")) { 
-      let id = e.target.id; 
-      fetch(`${SLI}/${id}`) 
-        .then((res) => res.json()) 
-        .then((data) => { 
-          // Заполняем поля модалки данными 
-          editName.value = data.name; 
-          editSurName.value = data.surname; 
-          editGroup.value = data.group; 
-          editImage.value = data.image; 
-   
-          editSaveBtn.setAttribute("id", data.id); 
-        }); 
-    } 
-});
-
-//!  сохранение изменений данных студентов
-
-editSaveBtn.addEventListener('click', function(){
-    let id = this.id; // вытаскиваем из кнопки id и ложим его в перееменную
-
-    let name = editName.value
-    let surname =editSurName.value
-    let group =editGroup.value
-    let image = editImage.value 
-
-    if (!name || !surname|| !group|| !image)
-    return ;  // проверка на заполненность полей в модальном окне
-
-
-    let editedStudent = {
-        name : name,
-        surname : surname,
-        group: group,
-        image: image,
-    };
-
-    saveEdit(editedStudent, id)
-  });
-
-
-  function saveEdit(editedStudent, id) {
-    fetch(`${SLI}/${id}`, {
-    method: 'PATCH',
-    headers: {
-        'Content-Type' : 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify(editedStudent),
-    }).then(() => {
-        render();
-    });
-
-    let modal = bootstrap.Modal.getInstance(exampleModal);
-    modal.hide();
-};
-
-//! ================PAGINATION ============
 
 function drawPaginationButtons(){
     fetch(`${SLI}?q=${searchValue}`)
@@ -225,3 +155,73 @@ document.addEventListener('click', function(e){
         render();
     }
 })
+
+function deleteStudent(id) {
+  fetch(`${SLI}/${id}`, {
+    method: "DELETE",
+  }).then(() => render());
+}
+
+
+
+//! РЕДАКТИРОВАНИЕ ДАННЫХ
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btn-edit")) {
+    let id = e.target.id;
+    fetch(`${SLI}/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Заполняем поля модалки данными
+        editName.value = data.name;
+        editSurName.value = data.surname;
+        editGroup.value = data.group;
+        editImage.value = data.image;
+
+        editSaveBtn.setAttribute("id", data.id);
+      });
+  }
+});
+
+//!  сохранение изменений данных студентов
+
+editSaveBtn.addEventListener("click", function () {
+  let id = this.id; // вытаскиваем из кнопки id и ложим его в перееменную
+
+  let name = editName.value;
+  let surname = editSurName.value;
+  let group = editGroup.value;
+  let image = editImage.value;
+
+  if (!name || !surname || !group || !image) return; // проверка на заполненность полей в модальном окне
+
+  let editedStudent = {
+    name: name,
+    surname: surname,
+    group: group,
+    image: image,
+  };
+
+  saveEdit(editedStudent, id);
+});
+
+function saveEdit(editedStudent, id) {
+  fetch(`${SLI}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(editedStudent),
+  }).then(() => {
+    render();
+  });
+
+
+  let modal = bootstrap.Modal.getInstance(exampleModal);
+  modal.hide();
+}
+
+searchInput.addEventListener("input", () => {
+  searchValue = searchInput.value;
+  render();
+});
+
