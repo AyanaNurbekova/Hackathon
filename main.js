@@ -179,8 +179,6 @@ document.addEventListener("click", function (e) {
   }
 });
 
-//!  сохранение изменений данных студентов
-
 editSaveBtn.addEventListener("click", function () {
   let id = this.id; // вытаскиваем из кнопки id и ложим его в перееменную
 
@@ -221,4 +219,3 @@ searchInp.addEventListener("input", () => {
   searchVal = searchInp.value;
   render();
 });
-
