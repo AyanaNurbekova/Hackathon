@@ -68,7 +68,7 @@ async function render() {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
-  //   drawPaginationButtons();
+  drawPaginationButtons();
 
   list.innerHTML = "";
   students.forEach((element) => {
@@ -79,8 +79,8 @@ async function render() {
       <img src=${element.image} class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">${element.name}</h5>
-        <p class="card-text">${element.surname}</p>
-        <p class="card-text">$ ${element.group}</p>
+        <p class="card-text">${element.group}</p>
+        <p class="card-text">$ ${element.surname}</p>
         <a href="#" id=${element.id} onclick = 'deleteStudent(${element.id})' class="btn btn-danger btn-delete">DELETE</a>
         <a href="#" id=${element.id} data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success btn-edit">EDIT</a>
       </div>
@@ -91,78 +91,69 @@ async function render() {
 }
 render();
 
-
-function drawPaginationButtons(){
-    fetch(`${SLI}?q=${searchValue}`)
-    .then((res) =>  res.json())
+function drawPaginationButtons() {
+  fetch(`${SLI}?q=${searchValue}`)
+    .then((res) => res.json())
     .then((data) => {
-        pageTotalCount  = Math.ceil(data.length / 9.); 
+      pageTotalCount = Math.ceil(data.length / 6);
 
-
-        paginationList.innerHTML = '';
-        for(let i=1; i < pageTotalCount; i++){
-
-            if(currentPage == i){
-                let page1 = document.createElement('li')
-                page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
-                paginationList.append(page1);
-            }else{
-                let page1 = document.createElement('li')
-                page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
-                paginationList.append(page1);  
-            };
-        };
-
-        //? красим кнопки
-        if(currentPage == 1) {
-            prev.classList.add('disabled');
-
+      paginationList.innerHTML = "";
+      for (let i = 1; i < pageTotalCount; i++) {
+        if (currentPage == i) {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
         } else {
-            prev.classList.remove('disabled');
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
         }
+      }
 
-        if(currentPage == pageTotalCount){
-            next.classList.add('disabled');
-        }else{
-            next.classList.remove('disabled');
-        }
+      //? красим кнопки
+      if (currentPage == 1) {
+        prev.classList.add("disabled");
+      } else {
+        prev.classList.remove("disabled");
+      }
 
-
-    }); 
-};
+      if (currentPage == pageTotalCount) {
+        next.classList.add("disabled");
+      } else {
+        next.classList.remove("disabled");
+      }
+    });
+}
 
 //? кнопка переключения на следующую страницу
-prev.addEventListener('click' , () => {
-    if(currentPage <= 1){
-        return;
-    }
-    currentPage--
-    render();
+prev.addEventListener("click", () => {
+  if (currentPage <= 1) {
+    return;
+  }
+  currentPage--;
+  render();
 });
 
-next.addEventListener('click', () => {
-    if(currentPage >= pageTotalCount){
-        return;
-    }
-    currentPage++
+next.addEventListener("click", () => {
+  if (currentPage >= pageTotalCount) {
+    return;
+  }
+  currentPage++;
+  render();
+});
+
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("page_number")) {
+    currentPage = e.target.innerText;
     render();
-})
-
-
-document.addEventListener('click', function(e){
-    if(e.target.classList.contains('page_number')){
-        currentPage = e.target.innerText;
-        render();
-    }
-})
+  }
+});
 
 function deleteStudent(id) {
   fetch(`${SLI}/${id}`, {
     method: "DELETE",
   }).then(() => render());
 }
-
-
 
 //! РЕДАКТИРОВАНИЕ ДАННЫХ
 document.addEventListener("click", function (e) {
@@ -215,7 +206,6 @@ function saveEdit(editedStudent, id) {
     render();
   });
 
-
   let modal = bootstrap.Modal.getInstance(exampleModal);
   modal.hide();
 }
@@ -224,4 +214,3 @@ searchInput.addEventListener("input", () => {
   searchValue = searchInput.value;
   render();
 });
-
