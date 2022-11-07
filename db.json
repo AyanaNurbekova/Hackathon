@@ -1,1 +1,75 @@
-{ "SLI": [] }
+{
+  "API": [
+    {
+      "name": " Айканыш",
+      "surname": "Акынбекова",
+      "group": "JS 26",
+      "image": "111",
+      "id": 1
+    },
+    {
+      "name": "Ислам",
+      "surname": "Аубакиров",
+      "group": "JS 26",
+      "image": "3",
+      "id": 2
+    },
+    {
+      "name": " Султан  ",
+      "surname": "Калназаров",
+      "group": "JS 26",
+      "image": "3",
+      "id": 3
+    },
+    {
+      "name": " Айжамал",
+      "surname": "Асанбекова",
+      "group": "JS 26",
+      "image": "22",
+      "id": 4
+    },
+    {
+      "name": " Дастан  ",
+      "surname": "Буларкиев ",
+      "group": "js",
+      "image": "22",
+      "id": 5
+    },
+    {
+      "name": "Сабина ",
+      "surname": "Джусупбекова ",
+      "group": "js",
+      "image": "22",
+      "id": 6
+    },
+    {
+      "name": " Сdfghjm",
+      "surname": "hdrgh",
+      "group": "ertyu",
+      "image": "dfghnm",
+      "id": 7
+    },
+    {
+      "name": " Султан  ",
+      "surname": "Калназаров",
+      "group": "js",
+      "image": "22",
+      "id": 8
+    },
+    {
+      "name": " Султан  ",
+      "surname": "Калназаров",
+      "group": "js",
+      "image": "22",
+      "id": 9
+    },
+    {
+      "name": " Султ  ",
+      "surname": "Калназав",
+      "group": "JS 26",
+      "image": "3",
+      "id": 10
+    }
+   
+  ]
+}
