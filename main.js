@@ -21,6 +21,12 @@ let exampleModal = document.querySelector("#exampleModal");
 
 let list = document.querySelector("#students-list");
 
+let currentPage = 1; //текущая страница
+let pageTotalCount = 1; //общая количество страниц
+let paginationList = document.querySelector(".pagination-list");
+let prev = document.querySelector(".prev");
+let next = document.querySelector(".next");
+
 btnAdd.addEventListener("click", async function () {
   let obj = {
     name: name.value,
@@ -85,16 +91,78 @@ async function render() {
 }
 render();
 
+
+function drawPaginationButtons(){
+    fetch(`${SLI}?q=${searchValue}`)
+    .then((res) =>  res.json())
+    .then((data) => {
+        pageTotalCount  = Math.ceil(data.length / 9.); 
+
+
+        paginationList.innerHTML = '';
+        for(let i=1; i < pageTotalCount; i++){
+
+            if(currentPage == i){
+                let page1 = document.createElement('li')
+                page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+                paginationList.append(page1);
+            }else{
+                let page1 = document.createElement('li')
+                page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+                paginationList.append(page1);  
+            };
+        };
+
+        //? красим кнопки
+        if(currentPage == 1) {
+            prev.classList.add('disabled');
+
+        } else {
+            prev.classList.remove('disabled');
+        }
+
+        if(currentPage == pageTotalCount){
+            next.classList.add('disabled');
+        }else{
+            next.classList.remove('disabled');
+        }
+
+
+    }); 
+};
+
+//? кнопка переключения на следующую страницу
+prev.addEventListener('click' , () => {
+    if(currentPage <= 1){
+        return;
+    }
+    currentPage--
+    render();
+});
+
+next.addEventListener('click', () => {
+    if(currentPage >= pageTotalCount){
+        return;
+    }
+    currentPage++
+    render();
+})
+
+
+document.addEventListener('click', function(e){
+    if(e.target.classList.contains('page_number')){
+        currentPage = e.target.innerText;
+        render();
+    }
+})
+
 function deleteStudent(id) {
   fetch(`${SLI}/${id}`, {
     method: "DELETE",
   }).then(() => render());
 }
 
-searchInput.addEventListener("input", () => {
-  searchValue = searchInput.value;
-  render();
-});
+
 
 //! РЕДАКТИРОВАНИЕ ДАННЫХ
 document.addEventListener("click", function (e) {
@@ -147,6 +215,13 @@ function saveEdit(editedStudent, id) {
     render();
   });
 
+
   let modal = bootstrap.Modal.getInstance(exampleModal);
   modal.hide();
 }
+
+searchInput.addEventListener("input", () => {
+  searchValue = searchInput.value;
+  render();
+});
+
