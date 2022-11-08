@@ -1,14 +1,17 @@
 const API = " http://localhost:8001/API";
 
+// input (add)
 let name = document.querySelector("#name");
 let surname = document.querySelector("#surname");
 let group = document.querySelector("#group");
 let image = document.querySelector("#image");
 let btnAdd = document.querySelector("#btn-add");
 
+//search 
 let searchInp = document.querySelector("#search");
 let searchVal = "";
 
+//input (edit)
 let editName = document.querySelector("#edit-name");
 let editSurName = document.querySelector("#edit-surname");
 let editGroup = document.querySelector("#edit-group");
@@ -16,14 +19,17 @@ let editImage = document.querySelector("#edit-image");
 let editSaveBtn = document.querySelector("#btn-save-edit");
 let exampleModal = document.querySelector("#exampleModal");
 
+//students list block (free)
 let list = document.querySelector("#students-list");
 
+// pagination (prev,1...5,next) 
 let currentPage = 1; //текущая страница
-let pageTotalCount = 1; //общая количество страниц
+let pageTotalCount = 1; //общая количество страниц (loops-циклы)
 let paginationList = document.querySelector(".pagination-list");
 let prev = document.querySelector(".prev");
 let next = document.querySelector(".next");
 
+// lst for btn(add)
 btnAdd.addEventListener("click", async function () {
   let obj = {
     name: name.value,
@@ -58,6 +64,7 @@ btnAdd.addEventListener("click", async function () {
   render();
 });
 
+// отображение карточек (данные студентов)
 async function render() {
   let students = await fetch(
     `${API}?q=${searchVal}&_page=${currentPage}&_limit=6`
@@ -77,10 +84,10 @@ async function render() {
       <div class="card-body">
         <h5 class="card-title">${element.name}</h5>
 
+        <p class="card-text"> ${element.surname}</p>
         <p class="card-text">${element.group}</p>
-        <p class="card-text">$ ${element.surname}</p>
 
-        <a href="#" id=${element.id} onclick = 'deleteStudent(${element.id})' class="btn btn-danger btn-delete">DELETE</a>
+        <a href="#" onclick = 'deleteStudent(${element.id})' class="btn btn-danger btn-delete">DELETE</a>
         <a href="#" id=${element.id} data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success btn-edit">EDIT</a>
       </div>
     </div>`;
@@ -90,6 +97,7 @@ async function render() {
 }
 render();
 
+// (pagination buttons (1,2,3,4.....))
 function drawPaginationButtons() {
   fetch(`${API}?q=${searchVal}`)
     .then((res) => res.json())
@@ -109,16 +117,7 @@ function drawPaginationButtons() {
         }
       }
 
-      //? красим кнопки
-      if (currentPage == 1) {
-        prev.classList.add("disabled");
-      } else {
-        let page1 = document.createElement("li");
-        page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
-        paginationList.append(page1);
-      }
-
-      //? красим кнопки
+      // красим кнопки prev/next
       if (currentPage == 1) {
         prev.classList.add("disabled");
       } else {
@@ -133,7 +132,7 @@ function drawPaginationButtons() {
     });
 }
 
-//? кнопка переключения на следующую страницу
+// кнопка переключения на (prev))
 prev.addEventListener("click", () => {
   if (currentPage <= 1) {
     return;
@@ -141,7 +140,7 @@ prev.addEventListener("click", () => {
   currentPage--;
   render();
 });
-
+// кнопка переключения на (next))
 next.addEventListener("click", () => {
   if (currentPage >= pageTotalCount) {
     return;
@@ -157,6 +156,7 @@ document.addEventListener("click", function (e) {
   }
 });
 
+// удаление 
 function deleteStudent(id) {
   fetch(`${API}/${id}`, {
     method: "DELETE",
@@ -219,6 +219,6 @@ function saveEdit(editedStudent, id) {
 }
 
 searchInp.addEventListener("input", () => {
-  searchVal = searchInp.value;
+  searchVal = searchInp.value; // записывает значение из поисковика в переменную searchVal
   render();
 });
